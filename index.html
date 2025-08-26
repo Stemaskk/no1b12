@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Building Q&A</title>
+    <title>Building Q&A — Checker</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="container">
     <h1>Building Questionnaire</h1>
-    <p class="subtitle">Answer the questions about each building and submit to see your responses.</p>
+    <p class="subtitle">Answer the questions for each building. When you submit, we’ll check your answers.</p>
 </header>
 
 <main class="container">
@@ -20,28 +20,27 @@
             <!-- Q1 (History) -->
             <fieldset class="q">
                 <legend>1) History — In what <strong>year</strong> was Building 1 constructed?</legend>
-                <input id="b1-year" name="b1-year" type="text" inputmode="numeric" placeholder="e.g., 1998" required />
+                <input id="b1-year" name="b1-year" type="text" inputmode="numeric"
+                       placeholder="e.g., 1998" pattern="^(1|2)\\d{3}$" required />
+                <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- Q2 -->
+            <!-- Q2 (Fossil typed) -->
             <fieldset class="q">
-                <legend>2) Which option best describes Building 1’s <strong>primary function</strong>?</legend>
+                <legend>2) What is the <strong>name of the fossil</strong> in the case on Floor 3?</legend>
+                <input id="b1-fossil" name="b1-fossil" type="text"
+                       placeholder="Type the fossil name…" required />
+                <small class="help">Exact name (not case-sensitive): “Columbian Mammoth Skull”.</small>
+            </fieldset>
+
+            <!-- Q3 (Company on Floor 2) -->
+            <fieldset class="q">
+                <legend>3) Which company <strong>rents out the rooms on Floor 2</strong>?</legend>
                 <div class="choices">
-                    <label><input type="radio" name="b1-function" value="Academic"> Academic</label>
-                    <label><input type="radio" name="b1-function" value="Administrative"> Administrative</label>
-                    <label><input type="radio" name="b1-function" value="Residential"> Residential</label>
-                    <label><input type="radio" name="b1-function" value="Mixed-use"> Mixed-use</label>
-                </div>
-            </fieldset>
-
-            <!-- Q3 -->
-            <fieldset class="q">
-                <legend>3) Which <strong>amenities</strong> does Building 1 have? (Select all that apply)</legend>
-                <div class="choices grid">
-                    <label><input type="checkbox" name="b1-amenities" value="Café"> Café</label>
-                    <label><input type="checkbox" name="b1-amenities" value="Study Rooms"> Study Rooms</label>
-                    <label><input type="checkbox" name="b1-amenities" value="Bike Storage"> Bike Storage</label>
-                    <label><input type="checkbox" name="b1-amenities" value="Rooftop Garden"> Rooftop Garden</label>
+                    <label><input type="radio" name="b1-company" value="Tesla"> Tesla</label>
+                    <label><input type="radio" name="b1-company" value="Google"> Google</label>
+                    <label><input type="radio" name="b1-company" value="Amazon"> Amazon</label>
+                    <label><input type="radio" name="b1-company" value="Microsoft"> Microsoft</label>
                 </div>
             </fieldset>
 
@@ -61,10 +60,12 @@
             <!-- Q1 (History) -->
             <fieldset class="q">
                 <legend>1) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
-                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric" placeholder="e.g., 2016" required />
+                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric"
+                       placeholder="e.g., 2016" pattern="^(1|2)\\d{3}$" required />
+                <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- Q2 -->
+            <!-- Q2 (Facility) -->
             <fieldset class="q">
                 <legend>2) Which facility is most associated with Building 2?</legend>
                 <div class="choices">
@@ -75,9 +76,9 @@
                 </div>
             </fieldset>
 
-            <!-- Q3 -->
+            <!-- Q3 (Instruments) -->
             <fieldset class="q">
-                <legend>3) What instruments are in Floor 3?</legend>
+                <legend>3) What <strong>instruments</strong> are in Floor 3? (Select all that apply)</legend>
                 <div class="choices grid">
                     <label><input type="checkbox" name="b2-instruments" value="Piano"> Piano</label>
                     <label><input type="checkbox" name="b2-instruments" value="Drum Set"> Drum Set</label>
@@ -99,7 +100,7 @@
 </main>
 
 <footer class="container footer">
-    <small>Built for quick data collection. All responses are stored locally in your browser.</small>
+    <small>All checking is done locally in your browser.</small>
 </footer>
 
 <script src="app.js"></script>
