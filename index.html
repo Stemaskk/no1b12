@@ -20,10 +20,7 @@
             <!-- Q1 (History) -->
             <fieldset class="q">
                 <legend>1) History — In what <strong>year</strong> was Building 1 constructed?</legend>
-                <label for="b1-year" class="sr-only">Construction year (4 digits)</label>
-                <input id="b1-year" name="b1-year" type="text" inputmode="numeric" placeholder="e.g., 1998"
-                       pattern="^(1|2)\\d{3}$" aria-describedby="b1-year-help" required />
-                <small id="b1-year-help" class="help">Enter a 4-digit year (e.g., 2005).</small>
+                <input id="b1-year" name="b1-year" type="text" inputmode="numeric" placeholder="e.g., 1998" required />
             </fieldset>
 
             <!-- Q2 -->
@@ -64,34 +61,30 @@
             <!-- Q1 (History) -->
             <fieldset class="q">
                 <legend>1) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
-                <label for="b2-reno" class="sr-only">Renovation year (4 digits)</label>
-                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric" placeholder="e.g., 2016"
-                       pattern="^(1|2)\\d{3}$" aria-describedby="b2-reno-help" required />
-                <small id="b2-reno-help" class="help">Enter a 4-digit year (e.g., 2016).</small>
+                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric" placeholder="e.g., 2016" required />
             </fieldset>
 
             <!-- Q2 -->
             <fieldset class="q">
-                <legend>2) Which <strong>entrance</strong> do you prefer when visiting Building 2?</legend>
-                <label for="b2-entrance" class="sr-only">Select an entrance</label>
-                <select id="b2-entrance" name="b2-entrance">
-                    <option value="" selected disabled>Choose one…</option>
-                    <option>Main (South) Entrance</option>
-                    <option>North Courtyard Entrance</option>
-                    <option>Underground Parking Lobby</option>
-                    <option>Accessible Ramp Entrance</option>
-                </select>
+                <legend>2) Which facility is most associated with Building 2?</legend>
+                <div class="choices">
+                    <label><input type="radio" name="b2-facility" value="Art Studios"> Art Studios</label>
+                    <label><input type="radio" name="b2-facility" value="Computer Labs"> Computer Labs</label>
+                    <label><input type="radio" name="b2-facility" value="Gallery Space"> Gallery Space</label>
+                    <label><input type="radio" name="b2-facility" value="Classrooms"> Classrooms</label>
+                </div>
             </fieldset>
 
             <!-- Q3 -->
             <fieldset class="q">
-                <legend>3) On a scale of 1–5, how would you rate Building 2’s <strong>accessibility</strong>?</legend>
-                <div class="choices">
-                    <label><input type="radio" name="b2-access" value="1"> 1</label>
-                    <label><input type="radio" name="b2-access" value="2"> 2</label>
-                    <label><input type="radio" name="b2-access" value="3"> 3</label>
-                    <label><input type="radio" name="b2-access" value="4"> 4</label>
-                    <label><input type="radio" name="b2-access" value="5"> 5</label>
+                <legend>3) What instruments are in Floor 3?</legend>
+                <div class="choices grid">
+                    <label><input type="checkbox" name="b2-instruments" value="Piano"> Piano</label>
+                    <label><input type="checkbox" name="b2-instruments" value="Drum Set"> Drum Set</label>
+                    <label><input type="checkbox" name="b2-instruments" value="Violin"> Violin</label>
+                    <label><input type="checkbox" name="b2-instruments" value="Guitar"> Guitar</label>
+                    <label><input type="checkbox" name="b2-instruments" value="Flute"> Flute</label>
+                    <label><input type="checkbox" name="b2-instruments" value="Saxophone"> Saxophone</label>
                 </div>
             </fieldset>
 
@@ -102,13 +95,6 @@
         </form>
 
         <output id="out-b2" class="output" aria-live="polite"></output>
-    </section>
-
-    <!-- Combined export -->
-    <section class="card" aria-labelledby="export-title">
-        <h2 id="export-title">Export</h2>
-        <p>Download your responses as a CSV for record-keeping.</p>
-        <button id="downloadCsv" class="btn">Download CSV</button>
     </section>
 </main>
 
