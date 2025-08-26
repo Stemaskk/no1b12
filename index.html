@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Building Q&A</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="container">
+    <h1>Building Questionnaire</h1>
+    <p class="subtitle">Answer the questions about each building and submit to see your responses.</p>
+</header>
+
+<main class="container">
+    <!-- Building 1 -->
+    <section class="card" aria-labelledby="b1-title">
+        <h2 id="b1-title">Building 1</h2>
+        <form id="form-b1" class="qa-form" novalidate>
+            <!-- Q1 (History) -->
+            <fieldset class="q">
+                <legend>1) History — In what <strong>year</strong> was Building 1 constructed?</legend>
+                <label for="b1-year" class="sr-only">Construction year (4 digits)</label>
+                <input id="b1-year" name="b1-year" type="text" inputmode="numeric" placeholder="e.g., 1998"
+                       pattern="^(1|2)\\d{3}$" aria-describedby="b1-year-help" required />
+                <small id="b1-year-help" class="help">Enter a 4-digit year (e.g., 2005).</small>
+            </fieldset>
+
+            <!-- Q2 -->
+            <fieldset class="q">
+                <legend>2) Which option best describes Building 1’s <strong>primary function</strong>?</legend>
+                <div class="choices">
+                    <label><input type="radio" name="b1-function" value="Academic"> Academic</label>
+                    <label><input type="radio" name="b1-function" value="Administrative"> Administrative</label>
+                    <label><input type="radio" name="b1-function" value="Residential"> Residential</label>
+                    <label><input type="radio" name="b1-function" value="Mixed-use"> Mixed-use</label>
+                </div>
+            </fieldset>
+
+            <!-- Q3 -->
+            <fieldset class="q">
+                <legend>3) Which <strong>amenities</strong> does Building 1 have? (Select all that apply)</legend>
+                <div class="choices grid">
+                    <label><input type="checkbox" name="b1-amenities" value="Café"> Café</label>
+                    <label><input type="checkbox" name="b1-amenities" value="Study Rooms"> Study Rooms</label>
+                    <label><input type="checkbox" name="b1-amenities" value="Bike Storage"> Bike Storage</label>
+                    <label><input type="checkbox" name="b1-amenities" value="Rooftop Garden"> Rooftop Garden</label>
+                </div>
+            </fieldset>
+
+            <div class="actions">
+                <button type="submit" class="btn">Submit Building 1</button>
+                <button type="button" class="btn ghost" data-reset="form-b1">Reset</button>
+            </div>
+        </form>
+
+        <output id="out-b1" class="output" aria-live="polite"></output>
+    </section>
+
+    <!-- Building 2 -->
+    <section class="card" aria-labelledby="b2-title">
+        <h2 id="b2-title">Building 2</h2>
+        <form id="form-b2" class="qa-form" novalidate>
+            <!-- Q1 (History) -->
+            <fieldset class="q">
+                <legend>1) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
+                <label for="b2-reno" class="sr-only">Renovation year (4 digits)</label>
+                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric" placeholder="e.g., 2016"
+                       pattern="^(1|2)\\d{3}$" aria-describedby="b2-reno-help" required />
+                <small id="b2-reno-help" class="help">Enter a 4-digit year (e.g., 2016).</small>
+            </fieldset>
+
+            <!-- Q2 -->
+            <fieldset class="q">
+                <legend>2) Which <strong>entrance</strong> do you prefer when visiting Building 2?</legend>
+                <label for="b2-entrance" class="sr-only">Select an entrance</label>
+                <select id="b2-entrance" name="b2-entrance">
+                    <option value="" selected disabled>Choose one…</option>
+                    <option>Main (South) Entrance</option>
+                    <option>North Courtyard Entrance</option>
+                    <option>Underground Parking Lobby</option>
+                    <option>Accessible Ramp Entrance</option>
+                </select>
+            </fieldset>
+
+            <!-- Q3 -->
+            <fieldset class="q">
+                <legend>3) On a scale of 1–5, how would you rate Building 2’s <strong>accessibility</strong>?</legend>
+                <div class="choices">
+                    <label><input type="radio" name="b2-access" value="1"> 1</label>
+                    <label><input type="radio" name="b2-access" value="2"> 2</label>
+                    <label><input type="radio" name="b2-access" value="3"> 3</label>
+                    <label><input type="radio" name="b2-access" value="4"> 4</label>
+                    <label><input type="radio" name="b2-access" value="5"> 5</label>
+                </div>
+            </fieldset>
+
+            <div class="actions">
+                <button type="submit" class="btn">Submit Building 2</button>
+                <button type="button" class="btn ghost" data-reset="form-b2">Reset</button>
+            </div>
+        </form>
+
+        <output id="out-b2" class="output" aria-live="polite"></output>
+    </section>
+
+    <!-- Combined export -->
+    <section class="card" aria-labelledby="export-title">
+        <h2 id="export-title">Export</h2>
+        <p>Download your responses as a CSV for record-keeping.</p>
+        <button id="downloadCsv" class="btn">Download CSV</button>
+    </section>
+</main>
+
+<footer class="container footer">
+    <small>Built for quick data collection. All responses are stored locally in your browser.</small>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
