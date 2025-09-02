@@ -1,4 +1,4 @@
-// ------- helpers -------
+// ---------- helpers ----------
 function collectForm(formEl) {
     const data = {};
     const fd = new FormData(formEl);
@@ -27,11 +27,11 @@ function sameSet(a = [], b = []) {
 function spanOk(text)  { return `<span class="ok">${text}</span>`; }
 function spanBad(text) { return `<span class="bad">${text}</span>`; }
 
-// ------- answer key -------
+// ---------- answer key (placeholders you can change) ----------
 const correct = {
     // Building 1
     "b1-year": "1998",
-    "b1-fossil": "columbian mammoth skull",     // case-insensitive check
+    "b1-fossil": "columbian mammoth skull", // case-insensitive compare
     "b1-company": "Tesla",
 
     // Building 2
@@ -40,84 +40,95 @@ const correct = {
     "b2-instruments": ["Piano", "Drum Set"]
 };
 
-// ------- checkers -------
-function checkB1(ans) {
-    const out = [];
+// ---------- check all (no spoilers) ----------
+function checkAllAnswers(ans) {
+    const lines = [];
+    let allCorrect = true;
 
-    // Q1
-    const y = (ans["b1-year"] || "").trim();
-    out.push(
-        `Q1: Year = ${y || "—"} → ` +
-        (y === correct["b1-year"] ? spanOk("Correct") : spanBad(`Wrong (Correct: ${correct["b1-year"]})`))
-    );
+    // B1 Q1
+    const b1y = (ans["b1-year"] || "").trim();
+    const b1yOK = b1y === correct["b1-year"];
+    lines.push(`B1 Q1 (Year): ${b1y || "—"} → ${b1yOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && b1yOK;
 
-    // Q2
-    const fossilTyped = (ans["b1-fossil"] || "").trim().toLowerCase();
-    const fossilOK = fossilTyped === correct["b1-fossil"];
-    out.push(
-        `Q2: Fossil = "${ans["b1-fossil"] || "—"}" → ` +
-        (fossilOK ? spanOk("Correct") : spanBad(`Wrong (Correct: Columbian Mammoth Skull)`))
-    );
+    // B1 Q2
+    const fossil = (ans["b1-fossil"] || "").trim().toLowerCase();
+    const fossilOK = fossil === correct["b1-fossil"];
+    lines.push(`B1 Q2 (Fossil): "${ans["b1-fossil"] || "—"}" → ${fossilOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && fossilOK;
 
-    // Q3
+    // B1 Q3
     const comp = ans["b1-company"] || "";
-    out.push(
-        `Q3: Company = ${comp || "—"} → ` +
-        (comp === correct["b1-company"] ? spanOk("Correct") : spanBad(`Wrong (Correct: ${correct["b1-company"]})`))
-    );
+    const compOK = comp === correct["b1-company"];
+    lines.push(`B1 Q3 (Company): ${comp || "—"} → ${compOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && compOK;
 
-    return out.join("\n");
-}
+    // B2 Q4
+    const b2y = (ans["b2-reno"] || "").trim();
+    const b2yOK = b2y === correct["b2-reno"];
+    lines.push(`B2 Q4 (Year): ${b2y || "—"} → ${b2yOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && b2yOK;
 
-function checkB2(ans) {
-    const out = [];
-
-    // Q1
-    const y = (ans["b2-reno"] || "").trim();
-    out.push(
-        `Q1: Year = ${y || "—"} → ` +
-        (y === correct["b2-reno"] ? spanOk("Correct") : spanBad(`Wrong (Correct: ${correct["b2-reno"]})`))
-    );
-
-    // Q2
+    // B2 Q5
     const fac = ans["b2-facility"] || "";
-    out.push(
-        `Q2: Facility = ${fac || "—"} → ` +
-        (fac === correct["b2-facility"] ? spanOk("Correct") : spanBad(`Wrong (Correct: ${correct["b2-facility"]})`))
-    );
+    const facOK = fac === correct["b2-facility"];
+    lines.push(`B2 Q5 (Facility): ${fac || "—"} → ${facOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && facOK;
 
-    // Q3
+    // B2 Q6
     const inst = ans["b2-instruments"] || [];
     const instOK = sameSet(inst, correct["b2-instruments"]);
-    out.push(
-        `Q3: Instruments = [${inst.join(", ") || "—"}] → ` +
-        (instOK ? spanOk("Correct") : spanBad(`Wrong (Correct: ${correct["b2-instruments"].join(", ")})`))
-    );
+    lines.push(`B2 Q6 (Instruments): [${inst.join(", ") || "—"}] → ${instOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && instOK;
 
-    return out.join("\n");
+    return { html: lines.join("\n"), allCorrect };
 }
 
-// ------- wire up forms -------
-document.getElementById("form-b1").addEventListener("submit", (e) => {
+// ---------- modal controls ----------
+const overlay = document.getElementById("modal-overlay");
+const modal = document.getElementById("access-modal");
+const okBtn = document.getElementById("modal-ok");
+function showModal() {
+    overlay.classList.remove("hidden");
+    modal.classList.remove("hidden");
+    overlay.setAttribute("aria-hidden", "false");
+}
+function hideModal() {
+    overlay.classList.add("hidden");
+    modal.classList.add("hidden");
+    overlay.setAttribute("aria-hidden", "true");
+}
+
+// Redirect URL after OK
+const REDIRECT_URL = "https://ohlonecicada.netlify.app/";
+
+// ---------- wire up ----------
+const form = document.getElementById("quiz-form");
+const results = document.getElementById("results");
+const resetAll = document.getElementById("resetAll");
+
+form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const ans = collectForm(e.target);
-    document.getElementById("out-b1").innerHTML = checkB1(ans);
+    const ans = collectForm(form);
+    const { html, allCorrect } = checkAllAnswers(ans);
+    results.innerHTML = html;
+    results.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    if (allCorrect) {
+        showModal();
+    }
 });
 
-document.getElementById("form-b2").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const ans = collectForm(e.target);
-    document.getElementById("out-b2").innerHTML = checkB2(ans);
+okBtn.addEventListener("click", () => {
+    hideModal();
+    window.location.href = REDIRECT_URL;
 });
 
-document.querySelectorAll("[data-reset]").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-reset");
-        const form = document.getElementById(id);
-        if (form) {
-            form.reset();
-            const out = form.parentElement.querySelector(".output");
-            if (out) out.innerHTML = "";
-        }
-    });
+overlay.addEventListener("click", hideModal); // close if clicking outside
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideModal(); });
+
+resetAll.addEventListener("click", () => {
+    form.reset();
+    results.innerHTML = "";
+    hideModal();
 });

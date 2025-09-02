@@ -3,21 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Building Q&A — Checker</title>
+    <title>Building Q&A — Unified Checker</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="container">
     <h1>Building Questionnaire</h1>
-    <p class="subtitle">Answer the questions for each building. When you submit, we’ll check your answers.</p>
+    <p class="subtitle">Answer all the questions and click “Check Answers”.</p>
 </header>
 
 <main class="container">
-    <!-- Building 1 -->
-    <section class="card" aria-labelledby="b1-title">
-        <h2 id="b1-title">Building 1</h2>
-        <form id="form-b1" class="qa-form" novalidate>
-            <!-- Q1 (History) -->
+    <!-- One unified form for both buildings -->
+    <form id="quiz-form" class="qa-form" novalidate>
+        <!-- Building 1 -->
+        <section class="card" aria-labelledby="b1-title">
+            <h2 id="b1-title">Building 1</h2>
+
+            <!-- Q1 -->
             <fieldset class="q">
                 <legend>1) History — In what <strong>year</strong> was Building 1 constructed?</legend>
                 <input id="b1-year" name="b1-year" type="text" inputmode="numeric"
@@ -25,15 +27,15 @@
                 <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- Q2 (Fossil typed) -->
+            <!-- Q2 -->
             <fieldset class="q">
                 <legend>2) What is the <strong>name of the fossil</strong> in the case on Floor 3?</legend>
                 <input id="b1-fossil" name="b1-fossil" type="text"
                        placeholder="Type the fossil name…" required />
-                <small class="help">Exact name (not case-sensitive): “Columbian Mammoth Skull”.</small>
+                <small class="help">Exact name (not case-sensitive).</small>
             </fieldset>
 
-            <!-- Q3 (Company on Floor 2) -->
+            <!-- Q3 -->
             <fieldset class="q">
                 <legend>3) Which company <strong>rents out the rooms on Floor 2</strong>?</legend>
                 <div class="choices">
@@ -43,31 +45,23 @@
                     <label><input type="radio" name="b1-company" value="Microsoft"> Microsoft</label>
                 </div>
             </fieldset>
+        </section>
 
-            <div class="actions">
-                <button type="submit" class="btn">Submit Building 1</button>
-                <button type="button" class="btn ghost" data-reset="form-b1">Reset</button>
-            </div>
-        </form>
+        <!-- Building 2 -->
+        <section class="card" aria-labelledby="b2-title">
+            <h2 id="b2-title">Building 2</h2>
 
-        <output id="out-b1" class="output" aria-live="polite"></output>
-    </section>
-
-    <!-- Building 2 -->
-    <section class="card" aria-labelledby="b2-title">
-        <h2 id="b2-title">Building 2</h2>
-        <form id="form-b2" class="qa-form" novalidate>
-            <!-- Q1 (History) -->
+            <!-- Q4 -->
             <fieldset class="q">
-                <legend>1) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
+                <legend>4) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
                 <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric"
-                       placeholder="e.g., 2000" pattern="^(1|2)\\d{3}$" required />
+                       placeholder="e.g., 2016" pattern="^(1|2)\\d{3}$" required />
                 <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- Q2 (Facility) -->
+            <!-- Q5 -->
             <fieldset class="q">
-                <legend>2) Which facility is most associated with Building 2?</legend>
+                <legend>5) Which facility is most associated with Building 2?</legend>
                 <div class="choices">
                     <label><input type="radio" name="b2-facility" value="Art Studios"> Art Studios</label>
                     <label><input type="radio" name="b2-facility" value="Computer Labs"> Computer Labs</label>
@@ -76,9 +70,9 @@
                 </div>
             </fieldset>
 
-            <!-- Q3 (Instruments) -->
+            <!-- Q6 -->
             <fieldset class="q">
-                <legend>3) What <strong>instruments</strong> are in Floor 3? (Select all that apply)</legend>
+                <legend>6) What <strong>instruments</strong> are in Floor 3? (Select all that apply)</legend>
                 <div class="choices grid">
                     <label><input type="checkbox" name="b2-instruments" value="Piano"> Piano</label>
                     <label><input type="checkbox" name="b2-instruments" value="Drum Set"> Drum Set</label>
@@ -88,16 +82,32 @@
                     <label><input type="checkbox" name="b2-instruments" value="Saxophone"> Saxophone</label>
                 </div>
             </fieldset>
+        </section>
 
-            <div class="actions">
-                <button type="submit" class="btn">Submit Building 2</button>
-                <button type="button" class="btn ghost" data-reset="form-b2">Reset</button>
-            </div>
-        </form>
+        <!-- Single unified actions -->
+        <div class="actions">
+            <button id="checkAll" type="submit" class="btn">Check Answers</button>
+            <button type="button" class="btn ghost" id="resetAll">Reset</button>
+        </div>
+    </form>
 
-        <output id="out-b2" class="output" aria-live="polite"></output>
+    <!-- Unified feedback -->
+    <section class="card" aria-labelledby="results-title">
+        <h2 id="results-title">Results</h2>
+        <output id="results" class="output" aria-live="polite"></output>
     </section>
 </main>
+
+<!-- Modal / tab popup for access code -->
+<div id="modal-overlay" class="overlay hidden" aria-hidden="true"></div>
+<div id="access-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h3 id="modal-title">Access Granted</h3>
+    <p>Your code is:</p>
+    <pre class="access-code">5KULL</pre>
+    <div class="modal-actions">
+        <button id="modal-ok" class="btn">OK</button>
+    </div>
+</div>
 
 <footer class="container footer">
     <small>All checking is done locally in your browser.</small>
@@ -106,4 +116,3 @@
 <script src="app.js"></script>
 </body>
 </html>
-
