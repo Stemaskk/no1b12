@@ -41,7 +41,6 @@ header { text-align: center; margin-top: 3rem; }
 
 h1 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); letter-spacing: .3px; }
 h2 { font-size: clamp(1.2rem, 2.2vw, 1.6rem); margin: .25rem 0 1rem; }
-h3 { margin: 0 0 .5rem; }
 
 fieldset.q { margin: 1rem 0 1.25rem; border: none; padding: 0; }
 legend { font-weight: 600; margin-bottom: .6rem; }

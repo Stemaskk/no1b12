@@ -9,35 +9,34 @@
 <body>
 <header class="container">
     <h1>Building Questionnaire</h1>
-    <p class="subtitle">Answer all the questions and click “Check Answers”.</p>
+    <p class="subtitle">Answer all questions and click “Check Answers”. Get them all right to reveal the code.</p>
 </header>
 
 <main class="container">
-    <!-- One unified form for both buildings -->
+    <!-- One unified form/card containing Building 1 & 2 -->
     <form id="quiz-form" class="qa-form" novalidate>
-        <!-- Building 1 -->
-        <section class="card" aria-labelledby="b1-title">
-            <h2 id="b1-title">Building 1</h2>
+        <section class="card" aria-labelledby="both-title">
+            <h2 id="both-title">Buildings 1 & 2</h2>
 
-            <!-- Q1 -->
+            <!-- B1 Q1 (Renovation year for both) -->
             <fieldset class="q">
-                <legend>1) History — In what <strong>year</strong> was Building 1 constructed?</legend>
+                <legend>1) When did <strong>Building 1 & 2</strong> get renovated?</legend>
                 <input id="b1-year" name="b1-year" type="text" inputmode="numeric"
-                       placeholder="Put your answer here" pattern="^(1|2)\\d{3}$" required />
+                       placeholder="e.g., 2019" pattern="^(1|2)\\d{3}$" required />
                 <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- Q2 -->
+            <!-- B1 Q2 (Fossil typed) -->
             <fieldset class="q">
-                <legend>2) What is the <strong>name of the fossil</strong> in the case on Floor 3?</legend>
+                <legend>2) What is the <strong>name of the fossil</strong> in the case on Floor 3 (Building 1)?</legend>
                 <input id="b1-fossil" name="b1-fossil" type="text"
                        placeholder="Type the fossil name…" required />
                 <small class="help">Exact name (not case-sensitive).</small>
             </fieldset>
 
-            <!-- Q3 -->
+            <!-- B1 Q3 (Company on B1 Floor 2) -->
             <fieldset class="q">
-                <legend>3) Which company <strong>rents out the rooms on Floor 2</strong>?</legend>
+                <legend>3) Which company <strong>rents out the rooms on Floor 2</strong> (Building 1)?</legend>
                 <div class="choices">
                     <label><input type="radio" name="b1-company" value="Tesla"> Tesla</label>
                     <label><input type="radio" name="b1-company" value="Google"> Google</label>
@@ -45,50 +44,36 @@
                     <label><input type="radio" name="b1-company" value="Microsoft"> Microsoft</label>
                 </div>
             </fieldset>
-        </section>
 
-        <!-- Building 2 -->
-        <section class="card" aria-labelledby="b2-title">
-            <h2 id="b2-title">Building 2</h2>
-
-            <!-- Q4 -->
+            <!-- B2 Q5 (Facility) -->
             <fieldset class="q">
-                <legend>4) History — In what <strong>year</strong> did Building 2 undergo its most recent major renovation?</legend>
-                <input id="b2-reno" name="b2-reno" type="text" inputmode="numeric"
-                       placeholder="Put your answer here" pattern="^(1|2)\\d{3}$" required />
-                <small class="help">Enter a 4-digit year.</small>
-            </fieldset>
-
-            <!-- Q5 -->
-            <fieldset class="q">
-                <legend>5) Which facility is most associated with Building 2?</legend>
+                <legend>4) Which facility is most associated with Building 2?</legend>
                 <div class="choices">
-                    <label><input type="radio" name="b2-facility" value="Art Studios"> Art Studios</label>
                     <label><input type="radio" name="b2-facility" value="Computer Labs"> Computer Labs</label>
-                    <label><input type="radio" name="b2-facility" value="Gallery Space"> Gallery Space</label>
-                    <label><input type="radio" name="b2-facility" value="Classrooms"> Classrooms</label>
+                    <label><input type="radio" name="b2-facility" value="Student Store"> Student Store</label>
+                    <label><input type="radio" name="b2-facility" value="Art Studios"> Art Studios</label>
+                    <label><input type="radio" name="b2-facility" value="Ohlone Student Life"> Ohlone Student Life</label>
                 </div>
             </fieldset>
 
-            <!-- Q6 -->
+            <!-- B2 Q6 (Instruments; no Saxophone) -->
             <fieldset class="q">
-                <legend>6) What <strong>instruments</strong> are in Floor 3? (Select all that apply)</legend>
+                <legend>5) What <strong>instruments</strong> are in Floor 3 (Building 2)? (Select all that apply)</legend>
                 <div class="choices grid">
                     <label><input type="checkbox" name="b2-instruments" value="Piano"> Piano</label>
                     <label><input type="checkbox" name="b2-instruments" value="Drum Set"> Drum Set</label>
                     <label><input type="checkbox" name="b2-instruments" value="Violin"> Violin</label>
                     <label><input type="checkbox" name="b2-instruments" value="Guitar"> Guitar</label>
                     <label><input type="checkbox" name="b2-instruments" value="Flute"> Flute</label>
-                    <label><input type="checkbox" name="b2-instruments" value="Saxophone"> Saxophone</label>
                 </div>
             </fieldset>
-        </section>
 
-        <!-- Single unified actions -->
-        <div class="actions">
-            <button id="checkAll" type="submit" class="btn">Check Answers</button>
-            <button type="button" class="btn ghost" id="resetAll">Reset</button>
-        </div>
+            <!-- Single unified actions -->
+            <div class="actions">
+                <button id="checkAll" type="submit" class="btn">Check Answers</button>
+                <button type="button" class="btn ghost" id="resetAll">Reset</button>
+            </div>
+        </section>
     </form>
 
     <!-- Unified feedback -->

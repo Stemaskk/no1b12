@@ -27,58 +27,53 @@ function sameSet(a = [], b = []) {
 function spanOk(text)  { return `<span class="ok">${text}</span>`; }
 function spanBad(text) { return `<span class="bad">${text}</span>`; }
 
-// ---------- answer key (placeholders you can change) ----------
+// ---------- answer key (updated) ----------
 const correct = {
-    // Building 1
-    "b1-year": "1998",
+    // Building 1 Q1 is now "When did Building 1 & 2 get renovated?"
+    "b1-year": "2019",                      // <-- updated to 2019
     "b1-fossil": "columbian mammoth skull", // case-insensitive compare
     "b1-company": "Tesla",
 
-    // Building 2
-    "b2-reno": "2016",
+    // Building 2 (no separate renovation question anymore)
     "b2-facility": "Art Studios",
     "b2-instruments": ["Piano", "Drum Set"]
 };
+
+const REDIRECT_URL = "https://ohlonecicada.netlify.app/";
 
 // ---------- check all (no spoilers) ----------
 function checkAllAnswers(ans) {
     const lines = [];
     let allCorrect = true;
 
-    // B1 Q1
-    const b1y = (ans["b1-year"] || "").trim();
-    const b1yOK = b1y === correct["b1-year"];
-    lines.push(`B1 Q1 (Year): ${b1y || "—"} → ${b1yOK ? spanOk("Correct") : spanBad("Wrong")}`);
-    allCorrect = allCorrect && b1yOK;
+    // B1 Q1: Renovation of both buildings
+    const reno = (ans["b1-year"] || "").trim();
+    const renoOK = reno === correct["b1-year"];
+    lines.push(`Q1 (Renovation year for 1 & 2): ${reno || "—"} → ${renoOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    allCorrect = allCorrect && renoOK;
 
-    // B1 Q2
+    // B1 Q2: Fossil (typed)
     const fossil = (ans["b1-fossil"] || "").trim().toLowerCase();
     const fossilOK = fossil === correct["b1-fossil"];
-    lines.push(`B1 Q2 (Fossil): "${ans["b1-fossil"] || "—"}" → ${fossilOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    lines.push(`Q2 (Fossil name B1): "${ans["b1-fossil"] || "—"}" → ${fossilOK ? spanOk("Correct") : spanBad("Wrong")}`);
     allCorrect = allCorrect && fossilOK;
 
-    // B1 Q3
+    // B1 Q3: Company on Floor 2
     const comp = ans["b1-company"] || "";
     const compOK = comp === correct["b1-company"];
-    lines.push(`B1 Q3 (Company): ${comp || "—"} → ${compOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    lines.push(`Q3 (Company on Floor 2 B1): ${comp || "—"} → ${compOK ? spanOk("Correct") : spanBad("Wrong")}`);
     allCorrect = allCorrect && compOK;
 
-    // B2 Q4
-    const b2y = (ans["b2-reno"] || "").trim();
-    const b2yOK = b2y === correct["b2-reno"];
-    lines.push(`B2 Q4 (Year): ${b2y || "—"} → ${b2yOK ? spanOk("Correct") : spanBad("Wrong")}`);
-    allCorrect = allCorrect && b2yOK;
-
-    // B2 Q5
+    // B2 Q4: Facility (renumbered to 4 in UI)
     const fac = ans["b2-facility"] || "";
     const facOK = fac === correct["b2-facility"];
-    lines.push(`B2 Q5 (Facility): ${fac || "—"} → ${facOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    lines.push(`Q4 (Facility B2): ${fac || "—"} → ${facOK ? spanOk("Correct") : spanBad("Wrong")}`);
     allCorrect = allCorrect && facOK;
 
-    // B2 Q6
+    // B2 Q5: Instruments set
     const inst = ans["b2-instruments"] || [];
     const instOK = sameSet(inst, correct["b2-instruments"]);
-    lines.push(`B2 Q6 (Instruments): [${inst.join(", ") || "—"}] → ${instOK ? spanOk("Correct") : spanBad("Wrong")}`);
+    lines.push(`Q5 (Instruments B2): [${inst.join(", ") || "—"}] → ${instOK ? spanOk("Correct") : spanBad("Wrong")}`);
     allCorrect = allCorrect && instOK;
 
     return { html: lines.join("\n"), allCorrect };
@@ -99,9 +94,6 @@ function hideModal() {
     overlay.setAttribute("aria-hidden", "true");
 }
 
-// Redirect URL after OK
-const REDIRECT_URL = "https://ohlonecicada.netlify.app/";
-
 // ---------- wire up ----------
 const form = document.getElementById("quiz-form");
 const results = document.getElementById("results");
@@ -115,16 +107,16 @@ form.addEventListener("submit", (e) => {
     results.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
     if (allCorrect) {
-        showModal();
+        showModal(); // shows 5KULL
     }
 });
 
-okBtn.addEventListener("click", () => {
+document.getElementById("modal-ok").addEventListener("click", () => {
     hideModal();
-    window.location.href = REDIRECT_URL;
+    window.location.href = REDIRECT_URL; // go back to main page
 });
 
-overlay.addEventListener("click", hideModal); // close if clicking outside
+overlay.addEventListener("click", hideModal);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideModal(); });
 
 resetAll.addEventListener("click", () => {
