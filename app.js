@@ -19,24 +19,19 @@ function sameSet(a = [], b = []) {
 }
 function normalize(s){ return (s||"").trim().toLowerCase(); }
 
-// ---------- answer key (from your current B1&2 site) ----------
+// ---------- answer key (unchanged) ----------
 const correct = {
-    // Q1: When did Building 1 & 2 get renovated?
     "b1-year": "2019",
-    // Q2: fossil name (typed, case-insensitive)
     "b1-fossil": "columbian mammoth skull",
-    // Q3: company on B1 floor 2
     "b1-company": "Tesla",
-    // Q4: B2 facility
     "b2-facility": "Art Studios",
-    // Q5: B2 instruments
     "b2-instruments": ["Piano", "Drum Set"]
 };
 
-// Redirect & modal ids (unchanged)
-const REDIRECT_URL = "https://ohlonecicada.netlify.app/";
+// ---------- redirect (NEW) ----------
+const REDIRECT_URL = "https://mamm0th.netlify.app/";
 
-// ---------- overall checker ----------
+// ---------- checker ----------
 function allAnswersCorrect(ans) {
     const q1 = (ans["b1-year"] || "").trim() === correct["b1-year"];
     const q2 = normalize(ans["b1-fossil"]) === correct["b1-fossil"];
@@ -46,13 +41,6 @@ function allAnswersCorrect(ans) {
     return q1 && q2 && q3 && q4 && q5;
 }
 
-// ---------- modal controls ----------
-const overlay = document.getElementById("modal-overlay");
-const modal = document.getElementById("access-modal");
-const okBtn = document.getElementById("modal-ok");
-function showModal(){ overlay.classList.remove("hidden"); modal.classList.remove("hidden"); overlay.setAttribute("aria-hidden","false"); }
-function hideModal(){ overlay.classList.add("hidden"); modal.classList.add("hidden"); overlay.setAttribute("aria-hidden","true"); }
-
 // ---------- wire up ----------
 const form = document.getElementById("quiz-form");
 const results = document.getElementById("results");
@@ -61,12 +49,16 @@ const resetAll = document.getElementById("resetAll");
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     const ok = allAnswersCorrect(collectForm(form));
-    results.textContent = ok ? "All correct! 🎉" : "Not quite — try again.";
+    if (ok) {
+        results.textContent = "All correct! Redirecting…";
+        window.location.href = REDIRECT_URL; // immediate redirect, no popup
+    } else {
+        results.textContent = "Not quite — try again.";
+    }
     results.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    if (ok) showModal(); // shows 5KULL (already in your HTML)
 });
 
-okBtn.addEventListener("click", () => { hideModal(); window.location.href = REDIRECT_URL; });
-overlay.addEventListener("click", hideModal);
-document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideModal(); });
-resetAll.addEventListener("click", () => { form.reset(); results.textContent = ""; hideModal(); });
+resetAll.addEventListener("click", () => {
+    form.reset();
+    results.textContent = "";
+});

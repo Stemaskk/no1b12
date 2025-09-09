@@ -9,7 +9,7 @@
 <body>
 <header class="container">
     <h1>Building Questionnaire</h1>
-    <p class="subtitle">Answer all questions and click “Check Answers”. Get them all right to reveal the code.</p>
+    <p class="subtitle">Answer all questions and click “Check Answers”. Get them all right to be redirected.</p>
 </header>
 
 <main class="container">
@@ -18,7 +18,7 @@
         <section class="card" aria-labelledby="both-title">
             <h2 id="both-title">Buildings 1 & 2</h2>
 
-            <!-- B1 Q1 (Renovation year for both) -->
+            <!-- B1 Q1 -->
             <fieldset class="q">
                 <legend>1) When did <strong>Building 1 & 2</strong> get renovated?</legend>
                 <input id="b1-year" name="b1-year" type="text" inputmode="numeric"
@@ -26,7 +26,7 @@
                 <small class="help">Enter a 4-digit year.</small>
             </fieldset>
 
-            <!-- B1 Q2 (Fossil typed) -->
+            <!-- B1 Q2 -->
             <fieldset class="q">
                 <legend>2) What is the <strong>name of the fossil</strong> in the case on Floor 3 (Building 1)?</legend>
                 <input id="b1-fossil" name="b1-fossil" type="text"
@@ -34,7 +34,7 @@
                 <small class="help">Exact name (not case-sensitive).</small>
             </fieldset>
 
-            <!-- B1 Q3 (Company on B1 Floor 2) -->
+            <!-- B1 Q3 -->
             <fieldset class="q">
                 <legend>3) Which company <strong>rents out the rooms on Floor 2</strong> (Building 1)?</legend>
                 <div class="choices">
@@ -45,7 +45,7 @@
                 </div>
             </fieldset>
 
-            <!-- B2 Q5 (Facility) -->
+            <!-- B2 Q4 -->
             <fieldset class="q">
                 <legend>4) Which facility is most associated with Building 2?</legend>
                 <div class="choices">
@@ -56,7 +56,7 @@
                 </div>
             </fieldset>
 
-            <!-- B2 Q6 (Instruments; no Saxophone) -->
+            <!-- B2 Q5 -->
             <fieldset class="q">
                 <legend>5) What <strong>instruments</strong> are in Floor 3 (Building 2)? (Select all that apply)</legend>
                 <div class="choices grid">
@@ -68,7 +68,6 @@
                 </div>
             </fieldset>
 
-            <!-- Single unified actions -->
             <div class="actions">
                 <button id="checkAll" type="submit" class="btn">Check Answers</button>
                 <button type="button" class="btn ghost" id="resetAll">Reset</button>
@@ -76,28 +75,81 @@
         </section>
     </form>
 
-    <!-- Unified feedback -->
     <section class="card" aria-labelledby="results-title">
         <h2 id="results-title">Results</h2>
         <output id="results" class="output" aria-live="polite"></output>
     </section>
 </main>
 
-<!-- Modal / tab popup for access code -->
-<div id="modal-overlay" class="overlay hidden" aria-hidden="true"></div>
-<div id="access-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <h3 id="modal-title">Access Granted</h3>
-    <p>Your code is:</p>
-    <pre class="access-code">5KULL</pre>
-    <div class="modal-actions">
-        <button id="modal-ok" class="btn">OK</button>
-    </div>
-</div>
-
 <footer class="container footer">
     <small>All checking is done locally in your browser.</small>
 </footer>
 
-<script src="app.js"></script>
+<script>
+    // ---------- helpers ----------
+    function collectForm(formEl) {
+        const data = {};
+        const fd = new FormData(formEl);
+        for (const [name, value] of fd.entries()) {
+            if (data[name]) {
+                if (Array.isArray(data[name])) data[name].push(value);
+                else data[name] = [data[name], value];
+            } else data[name] = value;
+        }
+        formEl.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (!fd.has(cb.name)) data[cb.name] = [];
+        });
+        return data;
+    }
+    function sameSet(a = [], b = []) {
+        const A = [...a].sort(); const B = [...b].sort();
+        return JSON.stringify(A) === JSON.stringify(B);
+    }
+    function normalize(s){ return (s||"").trim().toLowerCase(); }
+
+    // ---------- answer key ----------
+    const correct = {
+        "b1-year": "2019",
+        "b1-fossil": "columbian mammoth skull",
+        "b1-company": "Tesla",
+        "b2-facility": "Art Studios",
+        "b2-instruments": ["Piano", "Drum Set"]
+    };
+
+    // ---------- redirect ----------
+    const REDIRECT_URL = "https://mamm0th.netlify.app/";
+
+    // ---------- checker ----------
+    function allAnswersCorrect(ans) {
+        const q1 = (ans["b1-year"] || "").trim() === correct["b1-year"];
+        const q2 = normalize(ans["b1-fossil"]) === correct["b1-fossil"];
+        const q3 = (ans["b1-company"] || "") === correct["b1-company"];
+        const q4 = (ans["b2-facility"] || "") === correct["b2-facility"];
+        const q5 = sameSet(ans["b2-instruments"] || [], correct["b2-instruments"]);
+        return q1 && q2 && q3 && q4 && q5;
+    }
+
+    // ---------- wire up ----------
+    const form = document.getElementById("quiz-form");
+    const results = document.getElementById("results");
+    const resetAll = document.getElementById("resetAll");
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const ok = allAnswersCorrect(collectForm(form));
+        if (ok) {
+            results.textContent = "All correct! Redirecting…";
+            window.location.href = REDIRECT_URL; // immediate redirect
+        } else {
+            results.textContent = "Not quite — try again.";
+        }
+        results.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+
+    resetAll.addEventListener("click", () => {
+        form.reset();
+        results.textContent = "";
+    });
+</script>
 </body>
 </html>
